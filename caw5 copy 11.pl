@@ -1,79 +1,54 @@
 :- dynamic debug/1.
 
 /**
-
-
 caw00(off,f,[[append,2,1],[delete,2,1],[head,1,1],[tail,1,1],[member,1,1]],50,7,[[a,1]],[[b,1]],[],Program).
 Program = [f,[1,b]],[[f,[a,b],:-,[[=,[b,a]]]]],[[b,1]]
-
 caw00(off,f,[[append,2,1],[delete,2,1],[head,1,1],[tail,1,1],[member,1,1]],50,7,[[a,[1,2]]],[[b,[1,2]]],[],Program).
 Program = [f,[[1,2],b]],[[f,[a,b],:-,[[=,[b,a]]]]],[[b,[1,2]]]
-
 caw00(off,f,[[append,2,1],[delete,2,1],[head,1,1],[tail,1,1],[member,1,1]],50,7,[[a,1],[b,2]],[[c,[1,2]]],[],Program).
 Program = interpret(off,[f,[1,2,c]],[[f,[a,b,c],:-,[[append,[a,b,g]],[=,[c,g]]]]],[[c,[1,2]]])
-
 caw00(off,f,[[append,2,1],[delete,2,1],[head,1,1],[tail,1,1],[member,1,1]],50,8,[[a,1],[b,2],[c,3]],[[d,[1,2,3]]],[],Program).
-
 caw00(off,f,[[append,2,1],[delete,2,1],[head,1,1],[tail,1,1],[member,1,1]],50,7,[[a,[4,1,2,3]],[b,1]],[[d,[4,2,3]]],[],Program).
-
-
 [debug]  ?- optimise([[append,[a,b,c]],[append,[c,d,e]]],[a,b,d],[a,b,c,d],[e],P).                                                                                P = [[append, [a, b, c]], [append, [c, d, e]]] ;
-
 [debug]  ?- optimise([[append,[a,b,c]],[append,[a,b,c]]],[a,b],[a,b,c],[c],P). 
 P = [[append, [a, b, c]]] ;
-
 [debug]  ?- optimise([[append,[a,b,c]],[delete,[a,b,c]]],[a,b],[a,b,c],[c],P).
 P = [[append, [a, b, c]], [delete, [a, b, c]]] ;
-
 [debug]  ?- optimise([[append,[a,b,c]],[delete,[a,b,x]]],[a,b],[a,b,c,x],[c],P).
 P = [[append, [a, b, c]]] ;
-
 [debug]  ?- optimise([[append,[a,b,c]],[delete,[c,b,d]],[member,[c,d]]],[a,b],[a,b,c,d],[d],P).
 P = [[append, [a, b, c]], [delete, [c, b, d]], [member, [c, d]]] ;
-
 [debug]  ?- optimise([[append,[a,b,c]],[delete,[c,b,d]],[member,[a,d]]],[a,b],[a,b,c,d],[d],P).
 P = [[append, [a, b, c]], [delete, [c, b, d]], [member, [a, d]]] ;
-
 [debug]  ?- optimise([[append,[a,b,c]],[delete,[c,b,d]],[member,[a,x]]],[a,b],[a,b,c,d],[d],P).
 P = [[append, [a, b, c]], [delete, [c, b, d]]] ;
-
 [debug]  ?- optimise([[append,[a,b,c]],[delete,[c,b,d]],[member,[c,x]]],[a,b],[a,b,c,d],[d],P).
 P = [[append, [a, b, c]], [delete, [c, b, d]]] ;
-
 Wantedly fail:
 optimise([[append,[a,e,c]]],[a],[a,e,c],[c],P).
 optimise([[append,[a,b,c]],[append,[c,d,e]]],[a,d],[a,b,c,d],[e],P).
 optimise([[append,[a,b,c]],[append,[c,d,e]]],[a,b],[a,b,c,d],[e],P).
-
 optimise([[delete,[a,e,c]],[append,[a,a,e]]],[a,e],[a,e,c],[c],P).
 P = [[delete, [a, e, c]], [append, [a, a, e]]] .
-
 optimise([[append,[a,a,e]],[delete,[a,e,c]]],[a,e],[a,e,c],[c],P).
 P = [[append, [a, a, e]], [delete, [a, e, c]]] .
-
 optimise([[append,[a,e,c]]],[a,e,c],[a,e,c],[c],P).
 P = [[append, [a, e, c]]] .
-
 findrulesflowingtopv1([[append,[a,e,c]],[member,[a,e]]],[a],[a,e,c],[c],[],R,F).
 R = [[append, [a, e, c]], [member, [a, e]]]
-
 check optimise works with member ef v
 member ef and member in inputvars2 (cde) v
 optimise - aeg (remove e), v
 does optimise work with multiple rules with same output v
 delete returning progs in optimise v
 cut rule -
-
 aea cant point to itself in optimise - needs iterative deepening
 aec where e not in iv1 or another pred, try first or second in prog v
 don't pass rule to lower predicates v
-
 don't choose outputs from non new var v
 don't run repeat preds
-
 make predicate, clause writer
 member predicates returning no output
-
 **/
 
 caw00(Debug,PredicateName,Rules,MaxLength,TotalVars,InputVarList,OutputVarList,Program1,Program2) :-
@@ -217,13 +192,10 @@ findrulesflowingtopv2(_Program0,Rule,InputVars1,InputVars2,Var,Rules1,Rules2,IV1
 	(not(member(Rule,Rules1))->
 	append(Rules1,[Rule],Rules2);Rules2=Rules1),
 	subset(Rest,InputVars2),
-
 	intersection(Rest,InputVars1,Intersection),
 	length(Intersection,0),
-
 %%	not((member(Var2,Rest),
 %%	member(Var2,InputVars1))),
-
 	IV1Flag1=false.
 **/
 /**
@@ -237,17 +209,13 @@ findrulesflowingtopv2(Program0,Rule,InputVars1,InputVars2,Var,Rules1,Rules2,IV1F
 	
 	intersection(Rest,InputVars1,Intersection),
 	length(Intersection,0),
-
 %%	not((member(Var2,Rest),
 %%	member(Var2,InputVars1))),
-
 %%	delete(Program0,Rule,Program1),
-
 	IV1Flag2=false,
 	findrulesflowingtopv1(Program0,InputVars1,InputVars2,Rest,[],Rules4,IV1Flag3),
 	%%not(Rules4=[]),
 	iv1flagdisjunction(IV1Flag2,IV1Flag3,IV1Flag1),
-
 	append(Rules1,[Rule],Rules7),
 	append(Rules7,Rules4,Rules8),
 	unique1(Rules8,[],Rules2).
@@ -262,9 +230,7 @@ findrulesflowingtopv2(Rule,Program0,Program1,_Program2,InputVars1,InputVars,Var,
 	append(Rules1,[[PredicateName,Vars]],Rules3),
 	findrulesflowingtopv1(Program0,Program1,_Program2,InputVars1,InputVars,Rest,Rules3,Rules2,IV1Flag3),
 	iv1flagdisjunction(IV1Flag2,IV1Flag3,IV1Flag1).
-
 	%%findrulesflowingtopv2(Program5,Program2,Rest,Rules3,Rules2).
-
 **/
 iv1flagdisjunction(A,B,true) :-
 	(A=true); (B=true).
@@ -284,8 +250,6 @@ iv3s2(IV3,Rule,IV3s,IV3s1,IV3s2).
 	Rule=[_PredicateName,Vars],
 	restlast(Vars,[],_Rest,IV3),	
 	delete(IV3s1,IV3,IV3s2).
-
-
 findrulesflowingtopv1a(_,_,_,_,[],Rules,Rules).
 findrulesflowingtopv1a(Program1,Program2,InputVars1,InputVars2,Var,Rules1,Rules2) :-
 	atom(Var),
@@ -313,7 +277,6 @@ Program3=Program1,
 	append(Rules1,[[PredicateName,Vars]],Rules3),
 	subset(Rest,InputVars2)),
 	findrulesflowingtopv1a(Program3,Program2,InputVars1,InputVars2,Rest,Rules3,Rules2).
-
 %%->true;(Program2=Program1,Rules2=Rules1)).
 findrulesflowingtopv2a(Program1,Program2,InputVars1,InputVars,Var,Rules1,Rules2) :-
 	member([PredicateName,Vars],Program1),
@@ -408,5 +371,4 @@ no_singletons(Vars1,Program):-
 	findall(Count1,(member(Item,Vars3),aggregate_all(count,(member(Item,Vars3)),Count1),
 	Count1=1),G),G=[].
 
-	
 	

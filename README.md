@@ -1,9 +1,11 @@
 # Combination-Algorithm-Writer
 Combination Algorithm Writer
 
-(Please note: Deprecated. See updated https://github.com/luciangreen/Combination-Algorithm-Writer-with-Predicates (a different repository) instead).
+Please note: This works with the example below, which CAWMP doesn't.
 
 Combination Algorithm Writer is a SWI-Prolog algorithm that finds combinations of given commands that satisfy the given input and output.
+
+It verifies for no singletons.
 
 Installation
 Load all files in the form:
