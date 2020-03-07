@@ -51,14 +51,19 @@ make predicate, clause writer
 member predicates returning no output
 **/
 
-caw00(Debug,PredicateName,Rules,MaxLength,TotalVars,InputVarList,OutputVarList,Program1,Program2) :-
+caw00(Debug,PredicateName,Rules,MaxLength,TotalVars,InputVarList,OutputVarList,Predicates,Program1,Program2) :-
+	split3(PredicatesA,[],Rules2),
+	split2(PredicatesA,[],Predicates),
+	%%writeln([Rules2,Predicates]),
+	append(Rules1,Rules2,Rules3),
+
 	retractall(debug(_)),
     	assertz(debug(Debug)),
 	retractall(totalvars(_)),
     	assertz(totalvars(TotalVars)),
-	caw0(PredicateName,Rules,MaxLength,InputVarList,OutputVarList,Program1,Program2).
+	caw0(Predicates,PredicateName,Rules3,MaxLength,InputVarList,OutputVarList,Program1,Program2).
 
-caw0(PredicateName,Rules,MaxLength,InputVarList,OutputVarList,Program1,Program2) :-
+caw0(Predicates,PredicateName,Rules,MaxLength,InputVarList,OutputVarList,Program1,Program2) :-
 	varnames(InputVarList,[],InputVars,[],InputValues),
 	varnames(OutputVarList,[],OutputVars,[],_OutputValues),
 	retractall(outputvars(_)),
@@ -69,9 +74,9 @@ append(InputVars,OutputVars,Vars11),
 	append(InputValues,OutputVars,Vars2),
 	%%append(InputValues,OutputValues,Values),
 	Query=[PredicateName,Vars2],
-	caw(Query,PredicateName,Rules,MaxLength,Vars11,InputVars,InputVars,_,OutputVarList,OutputVars,Program1,Program2).
-caw(_,_,_,0,_,_,_,_,_,_,_) :- fail, !.
-caw(Query,PredicateName,_,_,_VarList,InputVars1,InputVars2,_,OutputVarList,OutputVars,Program1,Program2) :-
+	caw(Predicates,Query,PredicateName,Rules,MaxLength,Vars11,InputVars,InputVars,_,OutputVarList,OutputVars,Program1,Program2).
+caw(_,_,_,_,0,_,_,_,_,_,_,_) :- fail, !.
+caw(Predicates,Query,PredicateName,_,_,_VarList,InputVars1,InputVars2,_,OutputVarList,OutputVars,Program1,Program2) :-
 	addrules(InputVars2,OutputVars,OutputVars,[],PenultimateVars,[],Program3),
 %%writeln([addrules(InputVars2,OutputVars,OutputVars,[],PenultimateVars,[],Program3)]),	
 	optimise(Program1,InputVars1,InputVars3,PenultimateVars,Program4), %% IV2->3
@@ -82,11 +87,15 @@ caw(Query,PredicateName,_,_,_VarList,InputVars1,InputVars2,_,OutputVarList,Outpu
         [PredicateName,Vars2,(:-),
                 Program5
         ]
-        ],(debug(on)->Debug=on;Debug=off),
+        ],
+        
+        	append(Predicates,Program22,Program2),
+
+        (debug(on)->Debug=on;Debug=off),
 %%writeln([interpret(Debug,Query,Program2,OutputVarList)]),
 	interpret(Debug,Query,Program2,OutputVarList),
 	no_singletons(Vars2,Program5),!.
-caw(Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,InputVars3,OutputVarList,OutputVars,Program1,Program4) :-
+caw(Predicates,Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,InputVars3,OutputVarList,OutputVars,Program1,Program4) :-
 %%writeln([caw(Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,OutputVarList,OutputVars,Program1,Program4)]),
 	MaxLength2 is MaxLength - 1,
 %%writeln(["ml",MaxLength2]),
@@ -99,7 +108,7 @@ caw(Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,InputVars3
 %%writeln([inputVars3,InputVars3]),
 %%InputVars2=InputVars3,
 %%writeln([program4,Program4]),
-	caw(Query,PredicateName,Rules,MaxLength2,VarList2,InputVars1,InputVars4,InputVars3,OutputVarList,OutputVars,Program3,Program4).
+	caw(Predicates,Query,PredicateName,Rules,MaxLength2,VarList2,InputVars1,InputVars4,InputVars3,OutputVarList,OutputVars,Program3,Program4).
 
 varnames([],Vars,Vars,Values,Values) :- !.
 varnames(VarList,Vars1,Vars2,Values1,Values2) :-
@@ -371,4 +380,17 @@ no_singletons(Vars1,Program):-
 	findall(Count1,(member(Item,Vars3),aggregate_all(count,(member(Item,Vars3)),Count1),
 	Count1=1),G),G=[].
 
+	split3([],List,List) :- !.
+split3(Predicates1,List1,List2) :-
+	Predicates1=[Item1|List4],
+	Item1=	[[Name,In,Out]|_Rest],
+	append(List1,[[Name,In,Out]],List6),
+	split3(List4,List6,List2),!.
 	
+split2([],List,List) :- !.
+split2(Predicates1,List1,List2) :-
+	Predicates1=[Item1|List4],
+	Item1=	[[Name,_In,_Out]|Rest],
+	append(List1,[[Name|Rest]],List6),
+	split2(List4,List6,List2),!.
+
