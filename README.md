@@ -18,7 +18,7 @@ Load all files in the form:
 Running
 
 ```
-caw00(off,f,[[+,2,1]],4,8,[[a,1],[b,1],[c,2],[d,1]],[[e,5]],[[[f1,4,1],[a,b,c,d,e],(:-),[[+,[a,b,f]],[+,[c,f,g]],[+,[d,g,h]],[=,[e,h]]]]],[],P),writeln(P).
+caw00(off,f,[[+,2,1]],4,8,[[a,1],[b,1],[c,2],[d,1]],[[e,5]],[[[f1,4,1],[a,b,c,d,e],":-",[[+,[a,b,f]],[+,[c,f,g]],[+,[d,g,h]],[=,[e,h]]]]],[],P),writeln(P).
 
 [[f1,[a,b,c,d,e],:-,[[+,[a,b,f]],[+,[c,f,g]],[+,[d,g,h]],[=,[e,h]]]],[f,[a,b,c,d,e],:-,[[+,[a,b,f]],[+,[c,d,g]],[+,[f,g,h]],[=,[e,h]]]]]
 .
@@ -26,8 +26,6 @@ caw00(off,f,[[+,2,1]],4,8,[[a,1],[b,1],[c,2],[d,1]],[[e,5]],[[[f1,4,1],[a,b,c,d,
 .
 ```
 
-Note:
-Use (:-) instead of :-.
 
 # CAWPS API
 
@@ -35,4 +33,4 @@ Use (:-) instead of :-.
 * Move `cawps-api.pl` to the root (`/username/` or `~` on a server) of your machine.
 * Re-enter the paths to your Prolog files in it.
 * Enter `[cawps-api.pl]` in SWI-Prolog and `server(8000).`.
-* On a local host access the algorithm at `http://127.0.0.1:8000` and replaced 127.0.0.1 with your server address on a server.
+* On a local host access the algorithm at `http://127.0.0.1:8000` and replace 127.0.0.1 with your server address on a server.
