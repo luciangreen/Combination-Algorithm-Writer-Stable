@@ -7,10 +7,10 @@
 :- use_module(library(http/http_client)).
 :- http_handler('/', web_form, []).
 
-:- include('Dropbox/GitHub/Combination-Algorithm-Writer-Stable/listprologinterpreter1listrecursion4copy52.pl').
-:- include('Dropbox/GitHub/Combination-Algorithm-Writer-Stable/listprologinterpreter3preds5copy52.pl').
-:- include('Dropbox/GitHub/Combination-Algorithm-Writer-Stable/caw5copy11.pl').
-:- include('Dropbox/GitHub/Combination-Algorithm-Writer-Stable/lpi_caw_commands.pl').
+:- include('files/Combination-Algorithm-Writer-Stable/listprologinterpreter1listrecursion4copy52.pl').
+:- include('files/Combination-Algorithm-Writer-Stable/listprologinterpreter3preds5copy52.pl').
+:- include('files/Combination-Algorithm-Writer-Stable/caw5copy11.pl').
+:- include('files/Combination-Algorithm-Writer-Stable/lpi_caw_commands.pl').
 
 server(Port) :-
         http_server(http_dispatch, [port(Port)]).
