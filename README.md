@@ -1,5 +1,5 @@
-# Combination-Algorithm-Writer
-Combination Algorithm Writer
+# Combination-Algorithm-Writer-Stable
+Combination Algorithm Writer Stable
 
 Please note: This works with the example below, which CAWMP doesn't.
 
