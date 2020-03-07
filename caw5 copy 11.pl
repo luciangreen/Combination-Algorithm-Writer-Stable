@@ -51,9 +51,9 @@ make predicate, clause writer
 member predicates returning no output
 **/
 
-caw00(Debug,PredicateName,Rules,MaxLength,TotalVars,InputVarList,OutputVarList,Predicates,Program1,Program2) :-
-	split3(PredicatesA,[],Rules2),
-	split2(PredicatesA,[],Predicates),
+caw00(Debug,PredicateName,Rules1,MaxLength,TotalVars,InputVarList,OutputVarList,Predicates1,Program1,Program2) :-
+	split3(Predicates1,[],Rules2),
+	split2(Predicates1,[],Predicates),
 	%%writeln([Rules2,Predicates]),
 	append(Rules1,Rules2,Rules3),
 
@@ -79,11 +79,11 @@ caw(_,_,_,_,0,_,_,_,_,_,_,_) :- fail, !.
 caw(Predicates,Query,PredicateName,_,_,_VarList,InputVars1,InputVars2,_,OutputVarList,OutputVars,Program1,Program2) :-
 	addrules(InputVars2,OutputVars,OutputVars,[],PenultimateVars,[],Program3),
 %%writeln([addrules(InputVars2,OutputVars,OutputVars,[],PenultimateVars,[],Program3)]),	
-	optimise(Program1,InputVars1,InputVars3,PenultimateVars,Program4), %% IV2->3
+	%%optimise(Program1,InputVars1,InputVars3,PenultimateVars,Program4), %% IV2->3
 %%writeln([optimise(Program1,InputVars1,InputVars3,PenultimateVars,Program4)]),
-	append(Program4,Program3,Program5),
+	append(Program1,Program3,Program5),
 	append(InputVars1,OutputVars,Vars2),
-	Program2=[
+	Program22=[
         [PredicateName,Vars2,(:-),
                 Program5
         ]
