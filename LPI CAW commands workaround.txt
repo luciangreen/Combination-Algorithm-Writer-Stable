@@ -1,0 +1,9 @@
+LPI CAW commands workaround for single argument commands not working, but no singletons working
+
+_A - enter value in header (one output, so is it, do outputs one at a time)
+
+[] and "" - enter [] or "" somewhere in header and use normal "="
+
+not - can still use except for [], "", etc., see previous line
+
+With no singletons working, CAWP is more stable than CAWMP
