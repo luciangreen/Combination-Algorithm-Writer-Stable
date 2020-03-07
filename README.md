@@ -10,9 +10,9 @@ It verifies for no singletons.
 Installation
 Load all files in the form:
 ```
-['listprologinterpreter1listrecursion4 copy 52'].
-['listprologinterpreter3preds5 copy 52'].
-['caw5 copy 11'].
+['listprologinterpreter1listrecursion4copy52'].
+['listprologinterpreter3preds5copy52'].
+['caw5copy11'].
 ['lpi_caw_commands.pl'].
 ```
 Running
