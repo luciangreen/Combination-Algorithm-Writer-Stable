@@ -61,7 +61,7 @@ server(Port) :-
 																			  		      ]),
 
 													      		p([], [
-																	  label([for=algorithmlibrary],'Algorithm Library (e.g. [[[f1,4,1],[a,b,c,d,e],":-",[[+,[a,b,f]],[+,[c,f,g]],[+,[d,g,h]],[=,[e,h]]]]], where 4 is the number of inputs and 1 is the number of outputs):'),
+																	  label([for=algorithmlibrary],'Algorithm Library (e.g. [[[f1,4,1],[a,b,c,d,e],(:-),[[+,[a,b,f]],[+,[c,f,g]],[+,[d,g,h]],[=,[e,h]]]]], where 4 is the number of inputs and 1 is the number of outputs):'),
 																	  		  input([name=algorithmlibrary, type=textarea])
 																			  		      ]),
 
