@@ -11,17 +11,29 @@ interpretpart(not_is,Variable1,Variable2,Vars1,Vars1) :-
         getvalues(Variable1,Variable2,Value1,Value2,Vars1),
         	not(isempty(Value1)),
         	not(isempty(Value2)),
-        debug_call(Skip,[[not,=],[Value1,Value2]]),
+        %%writeln([call,[[not,=],[Value1,Value2]]]),
         ((not(Value1 = Value2)
 		)->
-      debug_exit(Skip,[[not,=],[Value1,Value2]])
-;     debug_fail(Skip,[[not,=],[Value1,Value2]])),!.                        	
+      true%%writeln([exit,[[not,=],[Value1,Value2]]])
+;     fail)%%writeln([fail,[[not,=],[Value1,Value2]]]))
+,!.                        	
 
 interpretpart(not_iscomparison,Operator,Variable1,Variable2,Vars1,Vars1) :-        getvalues(Variable1,Variable2,Value1,Value2,Vars1),
-        debug_call(Skip,[[not,Operator],[Value1,Value2]]),
+        %%writeln([call,[[not,=],[Value1,Value2]]]),
 	((isval(Value1),
 	isval(Value2),
 	Expression=..[Operator,Value1,Value2],
         not(Expression))->
-      debug_exit(Skip,[[not,Operator],[Value1,Value2]])
-;     debug_fail(Skip,[[not,Operator],[Value1,Value2]])),!.
+      true%%writeln([exit,[[not,=],[Value1,Value2]]])
+;     fail)%%writeln([fail,[[not,=],[Value1,Value2]]]))
+,!.                        	
+
+isempty(N) :-
+	N=empty.
+
+comparisonoperator(>).
+comparisonoperator(>=).
+comparisonoperator(<).
+comparisonoperator(=<).
+%%comparisonoperator(=).
+comparisonoperator(=\=).

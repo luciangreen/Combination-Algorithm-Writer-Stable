@@ -44,7 +44,11 @@ caw(Predicates,Query,PredicateName,_,_,_VarList,InputVars1,InputVars2,_,OutputVa
 
         (debug(on)->Debug=on;Debug=off),
 %%writeln([interpret(Debug,Query,Program2,OutputVarList)]),
-	interpret(Debug,Query,Program2,OutputVarList),
+%%writeln(""),
+	catch(call_with_time_limit(0.05, 
+		interpret(Debug,Query,Program2,OutputVarList)),
+      time_limit_exceeded,
+      fail),
 	no_singletons(Vars2,Program5),!.
 caw(Predicates,Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,InputVars3,OutputVarList,OutputVars,Program1,Program4) :-
 %%writeln([caw(Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,OutputVarList,OutputVars,Program1,Program4)]),

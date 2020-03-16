@@ -10,10 +10,10 @@ It verifies for no singletons.
 Installation
 Load all files in the form:
 ```
+['lpi_caw_commands.pl'].
 ['listprologinterpreter1listrecursion4copy52'].
 ['listprologinterpreter3preds5copy52'].
 ['caw5copy11'].
-['lpi_caw_commands.pl'].
 ```
 Running
 
@@ -25,6 +25,13 @@ caw00(off,f,[[+,2,1]],4,8,[[a,1],[b,1],[c,2],[d,1]],[[e,5]],[[[f1,4,1],[a,b,c,d,
 .
 .
 ```
+
+```
+caw00(off,reverse,[[head,1,1],[tail,1,1],[wrap,1,1],[append,2,1],[reverse,2,1]],6,8,[[a,[1,2,3]],[b,[]]],[[c,[3,2,1]]],[[[reverse,2,1],[[],a,a]]],[],P),writeln(P).
+
+not finished
+```
+
 Note: Use (:-) instead of :-.
 
 # CAWPS API
