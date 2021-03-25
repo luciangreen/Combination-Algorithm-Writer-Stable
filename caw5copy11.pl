@@ -43,8 +43,10 @@ caw(Predicates,Query,PredicateName,_,_,_VarList,InputVars1,InputVars2,_,OutputVa
         	append(Predicates,Program22,Program2),
 
         (debug(on)->Debug=on;Debug=off),
-%%writeln([interpret(Debug,Query,Program2,OutputVarList)]),
+%writeln([interpret(Debug,Query,Program2,OutputVarList)]),
 %%writeln(""),
+%trace,
+
 	catch(call_with_time_limit(0.05, 
 		interpret(Debug,Query,Program2,OutputVarList)),
       time_limit_exceeded,
