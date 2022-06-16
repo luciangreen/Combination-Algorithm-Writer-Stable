@@ -2,6 +2,12 @@
 :- dynamic totalvars/1.
 :- dynamic outputvars/1.
 
+:- dynamic test/1.
+
+:-include('../listprologinterpreter/la_strings.pl').
+
+test1(A) :- test(B),A is B+1,retractall(test(_)),assertz(test(A)).
+
 caw00(Debug,PredicateName,Rules1,MaxLength,TotalVars,InputVarList,OutputVarList,Predicates1,Program1,Program2) :-
 	split3(Predicates1,[],Rules2),
 	split2(Predicates1,[],Predicates),
@@ -12,6 +18,9 @@ caw00(Debug,PredicateName,Rules1,MaxLength,TotalVars,InputVarList,OutputVarList,
     	assertz(debug(Debug)),
 	retractall(totalvars(_)),
     	assertz(totalvars(TotalVars)),
+
+	retractall(test(_)),
+    	assertz(test(0)),
 	caw0(Predicates,PredicateName,Rules3,MaxLength,InputVarList,OutputVarList,Program1,Program2).
 
 caw0(Predicates,PredicateName,Rules,MaxLength,InputVarList,OutputVarList,Program1,Program2) :-
@@ -51,6 +60,7 @@ caw(Predicates,Query,PredicateName,_,_,_VarList,InputVars1,InputVars2,_,OutputVa
 		interpret(Debug,Query,Program2,OutputVarList)),
       time_limit_exceeded,
       fail),
+      %test1(A),writeln(A),
 	no_singletons(Vars2,Program5),!.
 caw(Predicates,Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,InputVars3,OutputVarList,OutputVars,Program1,Program4) :-
 %%writeln([caw(Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2,OutputVarList,OutputVars,Program1,Program4)]),
@@ -59,7 +69,7 @@ caw(Predicates,Query,PredicateName,Rules,MaxLength,VarList,InputVars1,InputVars2
 	member([RuleName,NumInputs,NumOutputs],Rules),
 %%writeln([member([RuleName,NumInputs,NumOutputs],Rules)]),
 %%writeln([rule(RuleName,NumInputs,NumOutputs,VarList,VarList2,Rule)]),
-	rule(RuleName,NumInputs,NumOutputs,InputVars2,InputVars4,VarList,VarList2,Rule),
+	rule(Program1,RuleName,NumInputs,NumOutputs,InputVars2,InputVars4,VarList,VarList2,Rule),
 %%writeln([rule(RuleName,NumInputs,NumOutputs,InputVars1,InputVars3,VarList,VarList2,Rule)]),
 	append(Program1,[Rule],Program3),
 %%writeln([inputVars3,InputVars3]),
@@ -265,9 +275,32 @@ restlast(Vars1,Rest1,Rest2,Last) :-
 	restlast(Vars2,Rest3,Rest2,Last),!.
 
 	
+	rule(Predicates,RuleName,NumInputs,NumOutputs,InputVars20,InputVars4,VarList0,VarList2,Rule) :-
+	
+	%InputVars20=InputVars2,%
+	%VarList0=VarList,
+	%writeln(Predicates),
+	/*
+	%writeln([Predicates,Predicates]),
+	%(not(Predicates=[])->trace;true),
+findall(Rule_vars1,member([_Rule_name,Rule_vars1],Predicates),Rule_vars2),foldr(append,Rule_vars2,Rule_vars3),
+
+% count vars
+	sort(Rule_vars3,K),
+	findall(G,(member(G,K),findall(G,member(G,Rule_vars3),H),length(H,J),J>2),L),
+% remove vars occuring more than twice
+
+(var(InputVars20)->InputVars20=InputVars2;(%trace,
+subtract(InputVars20,L,InputVars2)%,notrace
+)),
+ 
+(var(VarList0)->VarList0=VarList;subtract(VarList0,L,VarList)),
+*/
+
+rule1(RuleName,NumInputs,NumOutputs,InputVars20,InputVars4,VarList0,VarList2,Rule).
 
 
-rule(RuleName,1,1,InputVars1,InputVars2,VarList,VarList2,Rule) :-
+rule1(RuleName,1,1,InputVars1,InputVars2,VarList,VarList2,Rule) :-
 	member(Var,InputVars1),
 	rule2(RuleName,Var,VarList,VarList2,Rule,Var1),
 	append(InputVars1,[Var1],InputVars2).
@@ -275,7 +308,7 @@ rule2(RuleName,Var,VarList,VarList2,Rule,Var1) :-
 	var(VarList,Var1,VarList2),
 	Rule=[RuleName,[Var,Var1]],!.
 
-rule(RuleName,1,2,InputVars1,InputVars2,VarList,VarList2,Rule) :-
+rule1(RuleName,1,2,InputVars1,InputVars2,VarList,VarList2,Rule) :-
         member(Var,InputVars1),
         rule3(RuleName,Var,VarList,VarList2,Rule,Vars),
 	append(InputVars1,Vars,InputVars2).
@@ -284,7 +317,7 @@ rule3(RuleName,Var,VarList,VarList3,Rule,[Var1,Var2]) :-
         var(VarList2,Var2,VarList3),
         Rule=[RuleName,[Var,Var1,Var2]],!.
 
-rule(RuleName,2,1,InputVars1,InputVars2,VarList,VarList2,Rule) :-
+rule1(RuleName,2,1,InputVars1,InputVars2,VarList,VarList2,Rule) :-
         member(Var,InputVars1),
         member(Vara,InputVars1),
         rule4(RuleName,Var,Vara,VarList,VarList2,Rule,Var1),
@@ -293,7 +326,7 @@ rule4(RuleName,Var,Vara,VarList,VarList2,Rule,Var1) :-
         var(VarList,Var1,VarList2),
         Rule=[RuleName,[Var,Vara,Var1]],!.
 
-rule(RuleName,2,2,InputVars1,InputVars2,VarList,VarList2,Rule) :-
+rule1(RuleName,2,2,InputVars1,InputVars2,VarList,VarList2,Rule) :-
         member(Var,InputVars),
         member(Vara,InputVars),
         rule5(RuleName,Var,Vara,VarList,VarList2,Rule,Vars),

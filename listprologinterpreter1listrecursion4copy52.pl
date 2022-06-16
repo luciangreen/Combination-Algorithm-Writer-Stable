@@ -361,6 +361,14 @@ interpretstatement1(_F0,_Functions,[delete,[Variable1,Variable2,Variable3]],Vars
         interpretpart(delete,Variable1,Variable2,Variable3,Vars1,Vars2).
 %%** all in form f,[1,1,etc], including + with 0,1
 
+
+interpretstatement1(_F0,_Functions,[wrap,[Variable1,Variable2]],Vars1,Vars2,true,nocut) :-
+%%writeln1(52), wrap
+%%writeln([[n,wrap],[Variable1,Variable2]]),
+        interpretpart(bracket1,Variable1,Variable2,Vars1,Vars2).
+
+
+
 interpretstatement1(_F0,_Functions,[append,[Variable1,Variable2,Variable3]],Vars1,Vars2,true,nocut) :-
 %%writeln(9),
         interpretpart(append,Variable1,Variable2,Variable3,Vars1,Vars2).
