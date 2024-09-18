@@ -1,6 +1,6 @@
-/**:- include('listprologinterpreter3preds5.pl').
-:- include('lpiverify4.pl').
-:- include('caw5 copy 11.pl').
+/**:-include('listprologinterpreter3preds5.pl').
+:-include('lpiverify4.pl').
+:-include('caw5 copy 11.pl').
 **/
 :- dynamic debug/1.
 
